@@ -13,22 +13,20 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-        //dd($request);
         info("received login request for email " . $request["email"] . " and password " . $request["password"]);
         $match = ["email" => $request["email"], "password" => $request["password"]];
         $result = User::where($match)->get();
         if (count($result) > 0) {
             Log::info("record found...");
-            //dd($result);
             //$request->session()->put("user", $result[0]["name"]);
             $name = $result[0]["name"];
-            //$data = PasswdController::getAllIPs();
             return view('loggedIn', compact('name'));
         } else {
             $this->credsOK = false;
-            return ('Incorrect creds..!');
-            //return view('welcome', compact('credsOK'));
-            //session()->flash('error', 'Incorrect creds..!');
+            $credsOK = $this->credsOK;
+            $this->credsOK = true;
+            info("value of credsOK " . $this->credsOK);
+            return redirect()->route('welcome')->with(['credsOK' => $this->credsOK]);
         }
     }
 
