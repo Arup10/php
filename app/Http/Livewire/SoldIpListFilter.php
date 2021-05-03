@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Http\Controllers\PasswdController;
 use App\Models\Passwd;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -10,13 +9,56 @@ use Livewire\WithPagination;
 class SoldIpListFilter extends Component
 {
     use WithPagination;
+
+    /**
+     * The selected users
+     *
+     * @var array
+     */
     public $checked = [];
+
+    /**
+     * The number of records to be shown in a page
+     *
+     * @var int
+     */
     public $paginationValue = 10;
+
+    /**
+     * The selected filter name
+     *
+     * @var string
+     */
     public $filterName = 'all';
+
+    /**
+     * Whether the select all button is pressed or not
+     *
+     * @var bool
+     */
     public $selectAll = false;
+
+    /**
+     * The users are shown in the current page
+     *
+     * @var array
+     */
     public $userArray = [];
+
+    /**
+     * The used CSS framework
+     *
+     * @var string
+     */
     protected $paginationTheme = 'bootstrap';
 
+
+
+    /**
+     * This method is provided by livewire. This method renders the view to be displayed in the blade file.
+     *
+     * @return void
+     */
     public function render()
     {
         info("Inside render method");
@@ -37,24 +79,11 @@ class SoldIpListFilter extends Component
         return view('livewire.sold-ip-list-filter', compact('data'));
     }
 
-    /*  public function mount()
-    {
-        //$this->data = PasswdController::getAllIPs();
-        $this->data = Passwd::paginate($this->paginationValue);
-    } */
-
-    public function filterList($input)
-    {
-        info("Inside filterList1 method" . $input);
-        $this->filterName = $input;
-        info("processed filterList1 method");
-    }
-
-    public function paginate($input)
-    {
-        $this->paginationValue = $input;
-    }
-
+    /**
+     * This method deletes the selected user information from the datastore.
+     *
+     * @return void
+     */
     public function deleteRecords()
     {
         Passwd::whereKey($this->checked)->delete();
@@ -62,11 +91,17 @@ class SoldIpListFilter extends Component
         session()->flash('message', 'Selected records are deleted successfully!');
     }
 
+    /**
+     * This method exports the selected user information in a text file.
+     *
+     * @return void
+     */
     public function exportRecords()
     {
         $ips = Passwd::whereKey($this->checked)->get();
         $headers = array(
             'Content-Type' => 'text',
+            'Content-Disposition' => 'attachment; filename=sold-ip(s)' . now() . '.txt'
         );
         $callback = function () use ($ips) {
             $FH = fopen('php://output', 'w');
@@ -80,24 +115,18 @@ class SoldIpListFilter extends Component
         return response()->stream($callback, 200, $headers);
     }
 
+    /**
+     * This method is provided by livewire. This method updates the user array on selecting/unselecting the select all button in front end.
+     *
+     * @param  boolean $value
+     * @return void
+     */
     public function updatedSelectAll($value)
     {
-        //dd($this->userArray);
         if ($value) {
             $this->checked = $this->userArray;
         } else {
             $this->checked = [];
         }
     }
-
-    /* public function setData($value)
-    {
-        $this->dataSet = $value;
-        info("data set in dataSet variable with size: " . $this->dataSet->count());
-    }
-
-    public function getData()
-    {
-        return $this->dataSet;
-    } */
 }

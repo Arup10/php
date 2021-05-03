@@ -15,26 +15,40 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex flex-row card-header py-3">
-            <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownPaginationButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Results Per Page
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" wire:click="paginate('10')">10</a>
-                    <a class="dropdown-item" wire:click="paginate('20')">20</a>
-                    <a class="dropdown-item" wire:click="paginate('30')">30</a>
-                </div>
+        <div class="d-flex justify-content-between card-header py-3">
+            <div class="input-group col-md-2">
+                <label for="paginationBox">Result Per Page: </label>
+                <input type="number" class="form-control form-control-sm ml-1" id="paginationBox" wire:model.lazy="paginationValue">
             </div>
-            <div class="d-flex flex-row ">
+            <div class="input-group">
                 @if ($checked)
 
-                <button  type="button" class="btn btn-outline-secondary ml-4" wire:click="exportRecords()">Export
+                <button type="button" class="btn btn-outline-secondary ml-4" wire:click="exportRecords()">Export
                     ({{ count($checked) }})</button>
 
-                <button  type="button" class="btn btn-outline-danger ml-4" onclick="confirm('Are you sure you want to delete these Records?') || event.stopImmediatePropagation()" wire:click="deleteRecords()">Delete
+                <button type="button" class="btn btn-outline-danger ml-4" data-toggle="modal" data-target="#confirmModal">Delete
                     ({{ count($checked) }})</button>
-
+                <!-- Modal -->
+                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="confirmModalTitle">Warning</h4>
+                                <i class="fas fa-exclamation-triangle py-2 ml-2 fa-lg"></i>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <h5>Are you sure to delete the selected records?</h5>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-danger" wire:click="deleteRecords()">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 @endif
             </div>
             <div class="input-group justify-content-end">
