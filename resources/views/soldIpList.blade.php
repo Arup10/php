@@ -55,7 +55,7 @@
                         <h1 class="h3 mb-0 text-gray-800">Sold Ip List</h1>
                     </div>
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-primary" type="button" data-toggle="tooltip" data-placement="bottom" title="Logout" onclick="window.location='{{route('welcome')}}'">
+                        <button class="btn btn-primary" type="button" data-toggle="tooltip" data-placement="bottom" title="Logout" onclick="window.location='{{route('users.logout')}}'">
                             <i class="fas fa-sign-out-alt"></i>
                         </button>
                     </div>

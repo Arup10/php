@@ -15,13 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middleware' => 'disable-back-button'], function () {
-    Route::get('/', function () {
-        return view('welcome');
-    })->name("welcome");
-});
+Route::get('/', function () {
+    return view('welcome');
+})->name("welcome");
 
 Route::post('/user/login', [UserController::class, 'login'])->name("users.loginPage");
 Route::get('/sold-ip-list', [UserController::class, 'getSoldIpList'])->name("users.soldIpList");
 Route::get('/unsold-ip-list', [UserController::class, 'getUnsoldIpList'])->name("users.unsoldIpList");
+Route::get('/logout', [UserController::class, 'logout'])->name("users.logout");
 //Route::get('/user/portal/{filterType}', [PasswdController::class, 'performFilterOnData']);

@@ -5,7 +5,7 @@
 <div class="card-header">
     <div class="d-flex justify-content-end">
         <p class="px-3">Welcome, {{$name}}</p>
-        <button class="btn btn-primary" type="button" data-toggle="tooltip" data-placement="bottom" title="Logout" onclick="window.location='{{ route('welcome')}}'">
+        <button class="btn btn-primary" type="button" data-toggle="tooltip" data-placement="bottom" title="Logout" onclick="window.location='{{ route('users.logout')}}'">
             <i class="fas fa-sign-out-alt"></i>
         </button>
     </div>

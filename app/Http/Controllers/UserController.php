@@ -49,6 +49,7 @@ class UserController extends Controller
 
     public function logout()
     {
+        Log::info('logging out the user...');
         session()->flush();
         return redirect()->route('welcome');
     }
