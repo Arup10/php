@@ -88,9 +88,12 @@ class UnsoldIpListFilter extends Component
      */
     public function exportRecords()
     {
+        date_default_timezone_set('Asia/Kolkata');
+        $date = date('Ymd-His');
         $ips = Passwd::whereKey($this->checked)->get();
         $headers = array(
             'Content-Type' => 'text',
+            'Content-Disposition' => 'attachment; filename=unsold-ip(s)' . $date . '.txt'
         );
         $callback = function () use ($ips) {
             $FH = fopen('php://output', 'w');

@@ -80,6 +80,21 @@ class SoldIpListFilter extends Component
     }
 
     /**
+     * This method sets the filter name which is entered by the user.
+     *
+     * @param  mixed $input
+     * @return void
+     */
+    public function filterList($input)
+    {
+        info("Inside filterList method" . $input);
+        $this->filterName = $input;
+        $this->selectAll = false;
+        $this->checked = [];
+        info("processed filterList1 method");
+    }
+
+    /**
      * This method deletes the selected user information from the datastore.
      *
      * @return void
@@ -98,10 +113,12 @@ class SoldIpListFilter extends Component
      */
     public function exportRecords()
     {
+        date_default_timezone_set('Asia/Kolkata');
+        $date = date('Ymd-His');
         $ips = Passwd::whereKey($this->checked)->get();
         $headers = array(
             'Content-Type' => 'text',
-            'Content-Disposition' => 'attachment; filename=sold-ip(s)' . now() . '.txt'
+            'Content-Disposition' => 'attachment; filename=sold-ip(s)' . $date . '.txt'
         );
         $callback = function () use ($ips) {
             $FH = fopen('php://output', 'w');

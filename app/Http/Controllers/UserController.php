@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
-    public $credsOK = true;
+    public $incorrectCreds;
 
     public function login(Request $request)
     {
@@ -18,26 +18,39 @@ class UserController extends Controller
         $result = User::where($match)->get();
         if (count($result) > 0) {
             Log::info("record found...");
-            //$request->session()->put("user", $result[0]["name"]);
+            $request->session()->put("user", $result[0]["name"]);
             $name = $result[0]["name"];
             return view('loggedIn', compact('name'));
         } else {
-            $this->credsOK = false;
-            $credsOK = $this->credsOK;
-            $this->credsOK = true;
-            info("value of credsOK " . $this->credsOK);
-            return redirect()->route('welcome')->with(['credsOK' => $this->credsOK]);
+            $this->incorrectCreds = true;
+            return redirect()->route('welcome')->with(['incorrectCreds' => $this->incorrectCreds]);
         }
     }
 
     public function getSoldIpList()
     {
-        return view('soldIpList');
+        Log::info('getSoldIpList' . session('user'));
+        if (session('user')) {
+            return view('soldIpList');
+        } else {
+            return redirect()->route('welcome');
+        }
     }
 
     public function getUnsoldIpList()
     {
-        return view('unsoldIpList');
+        Log::info('getUnSoldIpList' . session('user'));
+        if (session('user')) {
+            return view('unsoldIpList');
+        } else {
+            return redirect()->route('welcome');
+        }
+    }
+
+    public function logout()
+    {
+        session()->flush();
+        return redirect()->route('welcome');
     }
 }
 

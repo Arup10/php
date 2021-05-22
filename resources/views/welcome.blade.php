@@ -15,7 +15,7 @@
             <button type="submit" class="btn btn-primary">Login</button>
         </div>
     </form>
-    @if(session('credsOK'))
+    @if(session('incorrectCreds'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>Error!</strong> Invalid Credential! Please try with the correct one!
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
